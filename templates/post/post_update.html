@@ -1,0 +1,27 @@
+
+{% extends 'post/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Информация
+{% endblock %}
+
+{% block content %}
+    <div class="container col-10" >
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for f in form %}
+                {% if f.name == 'bool' %}
+                    {{ f.label_tag }}
+                    {{ f|add_class:'form-control-sm; mt-3' }}
+                {% else %}
+                    {{ f.label_tag }}
+                    {{ f|add_class:'form-control' }}
+                {% endif %}
+            {% endfor %}
+            <button class="btn btn-success mt-2 float-right" type="submit">Изменить</button>
+        </form>
+    <a href="{% url 'index' %}"><button class="btn btn-primary mt-2 float-left">Назад</button></a>
+    </div>
+{% endblock %}

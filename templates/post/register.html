@@ -1,0 +1,25 @@
+{% extends 'post/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+    <div class="mx-auto">
+    <h1>Регистрация</h1>
+    <a href="/">Назад</a>
+
+    <form action="" method="post" class="col-4">
+            {% csrf_token %}
+            <div class="row">
+                {% for f in form %}
+                        <div class="col-md-12">
+                            {{ f.label_tag }}
+                            {{ f|add_class:'form-control' }}
+                        </div>
+                {% endfor %}
+            </div>
+            <button class="btn btn-success mt-2 float-right" type="submit">Добавить</button>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends 'post/base.html' %}
+
+{% block title %}
+    Поисковая страница
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <h3>Посик по запросу: {{ zapros }} </h3>
+    <span>{% if count == 1 %}Найден: {{ count }} Учебник{% elif count == 0 %}Нет книг по вашему запросу{% else %}Найдено: {{ count }} Книг{% endif %}</span>
+    {% for el in search %}
+
+            <div class="alert alert-success mt-2">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-12">
+                        <h3>{{ el.title }}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>{{ el.description }}</p>
+                        <a href="{% url 'post_update' el.pk %}">
+                            <button class="btn btn-success my-2 my-sm-0 float-right">Изменить</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <p class="float-right">{{ el.created }}</p>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+    {% else %}
+        <a href="{% url 'login' %}"><p class="text-center mt-5">Требуется вход в систему</p></a>
+    {% endif %}
+{% endblock %}

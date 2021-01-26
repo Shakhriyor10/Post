@@ -1,0 +1,103 @@
+{% extends 'post/base.html' %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>Главная страница</h2>
+        {% for el in posts %}
+            {% if el.bool == False %}
+                <div class="alert alert-success mt-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% if el.img %}
+                                <img src="{{ el.image.url }}" width="75" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12">
+                            <h3>{{ el.title }}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{{ el.description }}</p>
+                            <a href="{% url 'post_update' el.pk %}">
+                                <button class="btn btn-success my-2 my-sm-0 float-right">Изменить</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <p class="float-right">{{ el.created }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <a href="{% url 'login' %}"><p class="text-center mt-5">Требуется вход в систему</p></a>
+
+
+
+    {% endif %}
+    {% endblock %}
+
+    {% block generic %}
+        {% if user.is_authenticated %}
+        {% for contact in page_obj %}
+            {# Each "contact" is a Contact model object. #}
+            {{ contact.full_name|upper }}<br>
+        {% endfor %}
+
+        <div class="pagination float-right">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Первая стр</a> и
+                <a href="?page={{ page_obj.previous_page_number }}">предыдущая стр</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Следующая стр</a> и
+                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя стр &raquo;</a>
+            {% endif %}
+        </span>
+        </div>
+
+        <div class="container">
+            {% for book in books %}
+                <div class="alert alert-success mt-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-12">
+                            <h3>{{ book.title }}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{{ book.description }}</p>
+                            <a href="#">
+                                <button class="btn btn-success my-2 my-sm-0 float-right">Изменить</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <p class="float-right">{{ book.created }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+
+        {% endif %}
+{% endblock %}

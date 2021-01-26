@@ -1,0 +1,43 @@
+{% extends 'post/base.html' %}
+
+{% block title %}
+    Черновик
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <div class="row justify-content-between">
+        <h3 class="col-6">Сохранённые в черновике</h3>
+        <div class="float-right ml-3 col-3">
+            <a class="" href="{% url 'index' %}">
+                <button class="btn btn-primary mt-2">Назад</button>
+            </a>
+        </div>
+    </div>
+    {% for el in posts %}
+    {% if el.bool == True %}
+        <div class="alert alert-success mt-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>{{ el.title }}</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>{{ el.description }}</p>
+                    <a href="{% url 'post_update' el.pk %}"><button class="btn btn-success my-2 my-sm-0 float-right">Изменить</button></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <p class="float-right">{{ el.created }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% else %}
+        <a href="{% url 'login' %}"><p class="text-center mt-5">Требуется вход в систему</p></a>
+    {% endif %}
+{% endblock %}
