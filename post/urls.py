@@ -8,5 +8,4 @@ urlpatterns = [
     path('draft/', PostDraftView.as_view(), name='draft'),
     path('search/', SearchView.as_view(), name="search"),
     path('register/', RegisterView.as_view(), name='register'),
-    path('user_detal/<int:pk>', UserDetailView.as_view(), name='user_detail')
 ]

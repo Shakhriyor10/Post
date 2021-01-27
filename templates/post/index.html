@@ -7,6 +7,17 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h2>Главная страница</h2>
+        <form action="">
+            <select class="form-control col-2 float-right" id="exampleFormControlSelect1" name="select">
+                {% for author in authors %}
+                    <option {% if author.id == select %}{{ 'selected' }}{% endif %} value="{{ author.id }}"> {{ author.first_name }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-outline-success float-right" type="submit">Сортировать</button>
+        </form>
+        <br>
+        <br>
+        <br>
         {% for el in posts %}
             {% if el.bool == False %}
                 <div class="alert alert-success mt-2">
@@ -36,6 +47,9 @@
                     </div>
                 </div>
             {% endif %}
+
+            {% empty %}
+            <h1>Нет пока постов</h1>
         {% endfor %}
     {% else %}
         <a href="{% url 'login' %}"><p class="text-center mt-5">Требуется вход в систему</p></a>

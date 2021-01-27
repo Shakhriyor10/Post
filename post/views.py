@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView,
 from django.views.generic.base import View
 
 from .forms import SignupForm
-from .models import Post, Book
+from .models import Post, Book, Author
 
 
 # from django.core.paginator import Paginator
@@ -20,8 +20,30 @@ class PostView(ListView):
     # queryset = Post.objects.filter(draft=False)
 
     def get_context_data(self, **kwargs):
+        select = self.request.GET.get('select', 0)
         context = super(PostView, self).get_context_data(**kwargs)
+        context['authors'] = Author.objects.all()
+        context['select'] = select
         return context
+
+    def get_queryset(self):
+        select = self.request.GET.get('select', None)
+        print(select)
+        if select != None:
+            return Post.objects.filter(author=select)
+        else:
+            return Post.objects.all()
+
+
+# class SelectView(TemplateView):
+#     template_name = 'post/select.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(SelectView, self).get_context_data(**kwargs)
+#         return context
+#
+#     def post(self, request):
+#         return render(request, self.template_name, {'posts': Post.objects.filter(author__first_name=self.request.POST.get('select'))})
 
 
 class RegisterView(View):
@@ -81,16 +103,4 @@ class PostDraftView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PostDraftView, self).get_context_data(**kwargs)
         context['posts'] = Post.objects.all()
-        return context
-
-
-class UserDetailView(DetailView):
-    template_name = 'post/user_detail.html'
-    model = User
-    context_object_name = 'user'
-
-    def get_context_data(self, **kwargs):
-        context = super(UserDetailView, self).get_context_data(**kwargs)
-        user = User.objects.get(pk=self['pk'])
-        context['users'] = Post.objects.filter(user__title=user)
         return context
